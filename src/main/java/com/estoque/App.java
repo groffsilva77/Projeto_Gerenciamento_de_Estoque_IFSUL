@@ -9,40 +9,61 @@ public class App {
         int option;
         while (true) {
             System.out.println("--- Bem-vindo ao Sistema ---");
-            System.out.println("Escolha uma das opções a seguir para continuar:");
-            System.out.print("1. Adicionar Produto.");
-            System.out.print("2. Excluir Produto.");
-            System.out.print("3. Vender Produtos.");
-            System.out.print("4. Imprimir Produtos.");
-            System.out.print("5. Sair.");
+            System.out.println("1. Adicionar Produto.");
+            System.out.println("2. Excluir Produto.");
+            System.out.println("3. Vender Produtos.");
+            System.out.println("4. Imprimir Produtos.");
+            System.out.println("5. Sair.");
+            System.out.print("Escolha uma das opções acima para continuar: ");
             option = scanner.nextInt();
+            scanner.nextLine();
             if (option == 5) {
                 System.out.println("Saindo do sistema. Ate a proxima!");
                 break;
             }
             switch (option) {
                 case 1:
-                    System.out.print("Insira o codigo do produto: ");
+                    System.out.print("Codigo: ");
                     String code = scanner.nextLine();
-                    System.out.print("Insira o nome do produto: ");
+                    int itExists = -2;
+                    for (int i = 0; i < table.length; i++) {
+                        if (table[i][0] != null && code.equals(table[i][0])) {
+                            itExists = 0;
+                            break;
+                        }
+                    }
+                    if (itExists == 0) {
+                        printMessage("CADASTRAR", itExists);
+                        break;
+                    }
+                    System.out.print("Produto: ");
                     String product = scanner.nextLine();
+
                     System.out.print("Insira a quantidade do estoque: ");
                     int quanProduct = scanner.nextInt();
-                    scanner.nextLine();
                     System.out.print("Insira o preço: ");
                     int price = scanner.nextInt();
                     scanner.nextLine();
                     int status = addProduct(table, code, product, quanProduct, price);
-                    printMessag("CADASTRAR", status);
+                    printMessage("CADASTRAR", status);
                     break;
                 case 2:
-
+                    System.out.print("Insira o codigo do produto a ser excluido: ");
+                    code = scanner.nextLine();
+                    status = deleteProduct(table, code);
+                    printMessage("EXCLUIR", status);
                     break;
                 case 3:
-
+                    System.out.print("Insira o codigo do produto: ");
+                    code = scanner.nextLine();
+                    System.out.print("Insira a quantidade a ser vendida: ");
+                    quanProduct = scanner.nextInt();
+                    scanner.nextLine();
+                    status = sellProduct(table, code, quanProduct);
+                    printMessage("VENDER", status);
                     break;
                 case 4:
-
+                    printTable(table);
                     break;
                 default:
                     break;
@@ -51,11 +72,6 @@ public class App {
     }
 
     static int addProduct(String[][] table, String code, String product, int quanProduct, int price) {
-        for (int i = 0; i < table.length; i++) {
-            if (table[i][0] != null && table[i][0].equals(code)) {
-                return (0);
-            }
-        }
         for (int i = 0; i < table.length; i++) {
             if (table[i][0] == null) {
                 table[i][0] = code;
@@ -83,6 +99,13 @@ public class App {
 
     static int sellProduct(String[][] table, String code, int quanProduct) {
 
+    }
+
+    static void printTable(String[][] table) {
+        System.out.printf("%-8s %-25s %-12s %-8s\n", "Codigo", "Produto", "Quantidade", "Preço");
+        for (int i = 0; i < table.length; i++) {
+            System.out.printf("%-8s %-25s %-12s %-8s\n", table[i][0], table[i][1], table[i][2], table[i][3]);
+        }
     }
 
     static void printMessage(String type, int status) {
