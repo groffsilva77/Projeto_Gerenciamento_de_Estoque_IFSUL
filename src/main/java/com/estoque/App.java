@@ -98,7 +98,19 @@ public class App {
     }
 
     static int sellProduct(String[][] table, String code, int quanProduct) {
-
+        if (quanProduct <= 0)
+            return (2);
+        for (int i = 0; i < table.length; i++) {
+            if (table[i][0] != null && table[i][0].equals(code)) {
+                int currentStock = Integer.parseInt(table[i][2]);
+                if (currentStock < quanProduct)
+                    return (3);
+                int newStock = currentStock - quanProduct;
+                table[i][2] = String.valueOf(newStock);
+                return (0);
+            }
+        }
+        return (1);
     }
 
     static void printTable(String[][] table) {
@@ -125,7 +137,14 @@ public class App {
                     System.out.println("Produto nao cadastrado!");
                 break;
             case "VENDER":
-
+                if (status == 0)
+                    System.out.println("Venda realizada com sucesso!");
+                else if (status == 1)
+                    System.out.println("Produto não cadastrado!");
+                else if (status == 2)
+                    System.out.println("Quantidade inválida!");
+                else if (status == 3)
+                    System.out.println("Estoque insuficiente!");
                 break;
             default:
                 break;
